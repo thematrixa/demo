@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.GorchyGames.Models.User;
-import com.example.GorchyGames.Repository.UserRepository;
 import com.example.GorchyGames.Services.UserService;
 
 @Controller
