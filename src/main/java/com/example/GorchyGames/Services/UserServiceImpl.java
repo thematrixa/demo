@@ -14,7 +14,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 
-	@RequestMapping("/add")
 	@Override
 	public User createUser(User us) {
 		return this.userRepository.save(us);
