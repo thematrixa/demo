@@ -8,6 +8,6 @@ import com.example.GorchyGames.Models.User;
 @Repository
 public interface UserRepository extends CrudRepository<User,Long> {
 	
-	
+	public User findByUserName(String username);
 	
 }

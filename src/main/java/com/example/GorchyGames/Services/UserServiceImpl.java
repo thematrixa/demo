@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.GorchyGames.Models.User;
-import com.example.GorchyGames.Repository.UserRepositoryImpl;
+import com.example.GorchyGames.Repository.UserRepository;
 import com.example.GorchyGames.Services.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	UserRepositoryImpl userRepository;
+	UserRepository userRepository;
 
 	@RequestMapping("/add")
 	@Override
@@ -44,5 +44,18 @@ public class UserServiceImpl implements UserService {
 	public boolean exists(Long id) {
 		return this.userRepository.exists(id);
 	}
-
+	@Override
+	public User getByUserName(String username){
+		
+		return userRepository.findByUserName(username);
+	}
+	@Override
+	public boolean exists(String username) {
+		if(this.userRepository.findByUserName(username)!=null){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }
