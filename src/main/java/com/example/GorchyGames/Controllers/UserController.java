@@ -35,13 +35,15 @@ public class UserController {
 		return userService.getById(id);
 	}
 
-	@GetMapping(path = "/login") // Map ONLY GET Requests
-	public @ResponseBody User login(@RequestParam User user) {
+	@PostMapping(path = "/login") // Map ONLY GET Requests
+	public @ResponseBody User login(@RequestBody User user) {
 		// @ResponseBody means the returned String is the response, not a view
 		// name
 		// @RequestParam means it is a parameter from the GET or POST request
-		if (userService.exists(user.getUserName())) {
-			return userService.getByUserName(user.getUserName());
+		User userFromDB = userService.getByUserName(user.getUserName());
+
+		if (userFromDB != null && user.getPassWord().equals(userFromDB.getPassWord())) {
+			return userFromDB;
 		} else {
 			return null;
 		}
@@ -67,6 +69,7 @@ public class UserController {
 			return "Success";
 		}
 	}
+
 	@GetMapping(path = "/de") // Map ONLY GET Requests
 	public @ResponseBody String delete() {
 		// @ResponseBody means the returned String is the response, not a view
