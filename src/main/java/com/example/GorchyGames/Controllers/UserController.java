@@ -1,6 +1,10 @@
 package com.example.GorchyGames.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +23,23 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping(path = "/add") // Map ONLY GET Requests
-	public @ResponseBody User addNewUser(@RequestBody User us) {
-		// @ResponseBody means the returned String is the response, not a view
-		// name
-		// @RequestParam means it is a parameter from the GET or POST request
-
-		return userService.createUser(us);
+	public ResponseEntity<String> addNewUser(@RequestBody User user) {
+		
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.TEXT_PLAIN);
+        try {
+            String username = user.getUserName();
+            User userDb = this.userService.getByUserName(username);
+            if (username == null || userDb!= null) {
+             
+                return new ResponseEntity<>("Invalid data", header, HttpStatus.NOT_FOUND);
+            }
+            userService.createUser(user);
+            return new ResponseEntity<>(user.toString(), header, HttpStatus.OK);
+        } catch (Exception e) {
+        	
+            return new ResponseEntity<>("Server problem", header, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 	}
 
 	@GetMapping(path = "/user") // Map ONLY GET Requests
@@ -34,7 +49,7 @@ public class UserController {
 		// @RequestParam means it is a parameter from the GET or POST request
 		return userService.getById(id);
 	}
-
+/*
 	@PostMapping(path = "/login") // Map ONLY GET Requests
 	public @ResponseBody User login(@RequestBody User user) {
 		// @ResponseBody means the returned String is the response, not a view
@@ -47,7 +62,7 @@ public class UserController {
 		} else {
 			return null;
 		}
-	}
+	}*/
 
 	@GetMapping(path = "/getAll") // Map ONLY GET Requests
 	public @ResponseBody Iterable<User> getAllUsers() {

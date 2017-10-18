@@ -30,7 +30,7 @@ public class SimpleCORSFilter implements Filter {
 		if (allowedAccess(origin)) {
 			response.setHeader("Access-Control-Allow-Origin", origin);
 		}
-
+		
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 		response.setHeader("Access-Control-Max-Age", "3600");
@@ -39,6 +39,7 @@ public class SimpleCORSFilter implements Filter {
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-control", "max-age=0");
 		response.setHeader("Cache-control", "no-cache");
+		response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
 		if (!request.getMethod().toString().equals("OPTIONS")) {
 			chain.doFilter(req, res);
