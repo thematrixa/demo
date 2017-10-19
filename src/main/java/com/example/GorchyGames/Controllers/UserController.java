@@ -30,12 +30,14 @@ public class UserController {
         try {
             String username = user.getUserName();
             User userDb = this.userService.getByUserName(username);
-            if (username == null || userDb!= null) {
-             
-                return new ResponseEntity<>("Invalid data", header, HttpStatus.NOT_FOUND);
+            if (username == null) {
+                return new ResponseEntity<>("You didnt type in a username!", header,  HttpStatus.NOT_FOUND);
+            }
+            if (userDb!= null) {
+                return new ResponseEntity<>("Username is already taken!", header, HttpStatus.NOT_FOUND);
             }
             userService.createUser(user);
-            return new ResponseEntity<>(user.toString(), header, HttpStatus.OK);
+            return new ResponseEntity<>("Registration Successful!", header, HttpStatus.OK);
         } catch (Exception e) {
         	
             return new ResponseEntity<>("Server problem", header, HttpStatus.INTERNAL_SERVER_ERROR);
